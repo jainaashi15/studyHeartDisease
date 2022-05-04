@@ -2,15 +2,14 @@ loadDynamicGroupedBarChart = function(dataset){
     
     groupInfo =  getDataForDynamicGroupedBarChart(dataset);
 
-    //console.log("In dynamic grouped bar chart - " +groupInfo);
+    console.log("In dynamic grouped bar chart - " +groupInfo);
   
     var groups = d3.map(groupInfo, function(d){  return(d.AgeGrp)}).keys();
-    //console.log(groups);
+    console.log(groups);
     var diseasegroups =  d3.keys(groupInfo[0]).filter(function(key) { return key !== "AgeGrp"; });
-    //console.log(diseasegroups);
+    console.log(diseasegroups);
     groupInfo.forEach(function(d) {//console.log("name:"+ name+ "value:" +d[name]);
-    d.disease = diseasegroups.map(function(name) { //console.log(name +":" + d[name]);
-     return {name: name, value: +d[name]}; });
+    d.disease = diseasegroups.map(function(name) { console.log(name +":" + d[name]); return {name: name, value: +d[name]}; });
   });
 
  //var ids = ['preeschol', 'gradeschooler', 'teen', 'youngAdult', 'adult', 'middleAge', 'retired'];
@@ -32,7 +31,7 @@ var DiseaseCategory = ["Difficulty In Walking","Stroke", "Asthma","Kidney Diseas
    });
  
  // some variables declarations
- var margin = {top: 20, right: 20, bottom: 30, left: 40},
+ var margin = {top: 20, right: 20, bottom: 30, left: 50},
      width = 800 - margin.left - margin.right,
      height = 400 - margin.top - margin.bottom;
  
@@ -64,6 +63,32 @@ var DiseaseCategory = ["Difficulty In Walking","Stroke", "Asthma","Kidney Diseas
      .attr("height", height + margin.top + margin.bottom)
      .append("g")
      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("g")
+     .style("transform", `translate(${30}px,${5}px)`)
+     .append("text")
+     .attr("class", "title")
+     .attr("x", width / 8)
+     .attr("y", -5)
+     .attr("text-anchor", "middle")
+     .text("Age & Other Disease Distribution")
+     .style("font-size", "12px")
+     .style("text-decoration", "underline");
+
+  svg.append("text")             
+              .attr("transform",
+                  "translate(" + (width/2) + " ," + 
+                                  (height+25) + ")")
+              .style("text-anchor", "middle")
+              .text("Disease count");
+              
+  svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -40  )
+          .attr("x",-4)
+          
+          .style("text-anchor", "middle")
+          .text("Age Group");          
  
 var z = d3.select('.categories').selectAll('.category:checked');
 var zids = z[0].map(function(category) {
@@ -132,7 +157,7 @@ updateGraph(zids);
      }
    });
  
-   //console.log(AgeGroupDiseaseData);
+   console.log(AgeGroupDiseaseData);
  
    // x domain is between 0 and the maximun value in any ages.value
    x.domain([0, d3.max(AgeGroupDiseaseData, function(d) { return d3.max(d.disease, function(d) { return d.value }); })]);
